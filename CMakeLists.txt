@@ -241,6 +241,10 @@ include(config-ix)
 include(HandleLLVMOptions)
 
 # Verify that we can find a Python interpreter,
+#if( MSVC )
+#  set( PYTHON_EXECUTABLE “C:/python27/python.exe” )
+#endif()
+set(Python_ADDITIONAL_VERSIONS 2.7 2.6 2.5)
 include(FindPythonInterp)
 if( NOT PYTHONINTERP_FOUND )
   message(FATAL_ERROR

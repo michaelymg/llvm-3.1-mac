@@ -8,6 +8,11 @@ set(SOURCES
   Profiling.h
   )
 
+if( POLICY CMP0042 )
+  set( CMAKE_MACOSX_RPATH ON )
+endif()
+
+
 add_llvm_library( profile_rt-static ${SOURCES} )
 set_target_properties( profile_rt-static
   PROPERTIES

@@ -725,8 +725,11 @@ ExtractCodeRegion(ArrayRef<BasicBlock*> code) {
   // Look at all successors of the codeReplacer block.  If any of these blocks
   // had PHI nodes in them, we need to update the "from" block to be the code
   // replacer, not the original block in the extracted region.
-  std::vector<BasicBlock*> Succs(succ_begin(codeReplacer),
-                                 succ_end(codeReplacer));
+    std::vector<BasicBlock*> Succs;
+    for (auto SI = succ_begin(codeReplacer), SE = succ_end(codeReplacer);
+         SI != SE; ++SI)
+        Succs.push_back(*SI);
+
   for (unsigned i = 0, e = Succs.size(); i != e; ++i)
     for (BasicBlock::iterator I = Succs[i]->begin(); isa<PHINode>(I); ++I) {
       PHINode *PN = cast<PHINode>(I);
