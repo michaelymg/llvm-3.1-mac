@@ -973,11 +973,13 @@ void LazyValueInfoCache::threadEdge(BasicBlock *PredBB, BasicBlock *OldSucc,
     }
 
     if (!changed) continue;
-    
-      for (succ_iterator SI = succ_begin(ToUpdate), SE = succ_end(ToUpdate);
-           SI != SE; ++SI)
-          worklist.push_back(*SI);
-    //worklist.insert(worklist.end(), succ_begin(ToUpdate), succ_end(ToUpdate));
+#ifndef __APPLE__
+    worklist.insert(worklist.end(), succ_begin(ToUpdate), succ_end(ToUpdate));
+#else
+    for (succ_iterator SI = succ_begin(ToUpdate), SE = succ_end(ToUpdate);
+         SI != SE; ++SI)
+      worklist.push_back(*SI);
+#endif
   }
 }
 

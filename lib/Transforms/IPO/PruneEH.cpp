@@ -247,9 +247,13 @@ void PruneEH::DeleteBasicBlock(BasicBlock *BB) {
   }
 
   // Get the list of successors of this block.
+#ifndef __APPLE__
+  std::vector<BasicBlock*> Succs(succ_begin(BB), succ_end(BB));
+#else
   std::vector<BasicBlock*> Succs;
   for (auto SI = succ_begin(BB), SE = succ_end(BB); SI != SE; ++SI)
     Succs.push_back(*SI);
+#endif
 
   for (unsigned i = 0, e = Succs.size(); i != e; ++i)
     Succs[i]->removePredecessor(BB);

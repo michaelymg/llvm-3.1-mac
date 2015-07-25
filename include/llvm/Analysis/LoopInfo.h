@@ -810,13 +810,13 @@ public:
         typedef GraphTraits<Inverse<BlockT*> > InvBlockTraits;
 
         // Add all of the predecessors of X to the end of the work stack...
-#ifdef __APPLE__
-        for (auto CI = InvBlockTraits::child_begin(X), CE = InvBlockTraits::child_end(X);
-                  CI != CE; ++CI)
-          TodoStack.push_back(*CI);
-#else
+#ifndef __APPLE__
         TodoStack.insert(TodoStack.end(), InvBlockTraits::child_begin(X),
                          InvBlockTraits::child_end(X));
+#else
+        for (auto CI = InvBlockTraits::child_begin(X), CE = InvBlockTraits::child_end(X);
+             CI != CE; ++CI)
+          TodoStack.push_back(*CI);
 #endif
       }
     }
